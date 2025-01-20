@@ -58,10 +58,10 @@
     transform: scale(0.95);
 }
 
-#alphabet span.corret{
-    color: deeppink;
+#alphabet span.correct{
+    color: rgb(255, 115, 190);
 }
 
 #alphabet span.uncorrect{
-    color: red;
+    color: rgb(250, 94, 94);
 }
