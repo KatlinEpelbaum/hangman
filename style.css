@@ -1,19 +1,59 @@
-#word{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2.5rem;
+#word {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 3rem;
     letter-spacing: 1rem;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 2rem;
 }
-#container{
+
+#container {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 6rem;
     flex-direction: column;
     text-align: center;
+    padding: 0 1rem;
+    background-color: white;
+    border-radius: 8px;
+    padding: 3rem;
 }
-#score-container{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 3rem;
+
+#score-container {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 3.5rem;
     display: flex;
     justify-content: center;
-    padding-bottom: 6rem;
+    padding-bottom: 2rem;
+    font-weight: bold;
+    color: black;
+}
+
+#alphabet {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+#alphabet span {
+    font-size: 2rem;
+    border: 2px solid black;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 0.5rem;
+    color: black;
+    font-weight: bold;
+    background-color: white;
+}
+
+#alphabet span:hover {
+    background-color: black;
+    color: white;
+}
+
+#alphabet span:active {
+    transform: scale(0.95);
 }

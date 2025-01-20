@@ -3,22 +3,27 @@ const scoreSpan = document.getElementById('score');
 const alphabetDiv = document.getElementById('alphabet');
 
 const alphabet = 'abcdefghijklmnopqrsšzžtuvwõäöüxy';
-
+for (let char of alphabet) {
+    let letterSpan = document.createElement('span');
+    letterSpan.id = char;
+    letterSpan.innerText = char.toUpperCase();
+    alphabetDiv.appendChild(letterSpan);
+}
 
 let score = 10;
-scoreDiv.innerText = score
+scoreSpan.innerText = score;
 
 let word = 'I love cats <3';
 let guessedWord = '';
 
-for(let char of word){
-    if( char.toUpperCase() != char.toLowerCase() ){
-        guessedWord += '_'
-    } else{
-        guessedWord+= char;
+for (let char of word) {
+    if (char.toUpperCase() !== char.toLowerCase()) {
+        guessedWord += '_';
+    } else {
+        guessedWord += char;
     }
 }
 
-guessedWordDiv.innerText = guessedWord
+guessedWordDiv.innerText = guessedWord;
 
 console.log(guessedWord);
