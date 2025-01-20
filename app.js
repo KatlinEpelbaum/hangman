@@ -3,10 +3,11 @@ const scoreSpan = document.getElementById('score');
 const alphabetDiv = document.getElementById('alphabet');
 
 const alphabet = 'abcdefghijklmnopqrsšzžtuvwõäöüxy';
-for (let char of alphabet) {
+for (letter of alphabet) {
     let letterSpan = document.createElement('span');
-    letterSpan.id = char;
-    letterSpan.innerText = char.toUpperCase();
+    letterSpan.id = letter;
+    letterSpan.innerText = letter.toUpperCase();
+
     alphabetDiv.appendChild(letterSpan);
 }
 

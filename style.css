@@ -57,3 +57,11 @@
 #alphabet span:active {
     transform: scale(0.95);
 }
+
+#alphabet span.corret{
+    color: deeppink;
+}
+
+#alphabet span.uncorrect{
+    color: red;
+}
