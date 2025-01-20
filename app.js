@@ -2,13 +2,13 @@ const guessedWordDiv = document.getElementById('word');
 const scoreSpan = document.getElementById('score');
 const alphabetDiv = document.getElementById('alphabet');
 const message = document.getElementById('message');
+const newGameBtn = document.getElementById('try-again');
 
 const alphabet = 'abcdefghijklmnopqrsšzžtuvwõäöüxy';
 let guessedLetters = '';
 
-let word = 'I love cats <3';
+let word = 'Meow';
 let guessedWord = '';
-
 
 for (let letter of word) {
     if (letter.toUpperCase() !== letter.toLowerCase()) {
@@ -23,12 +23,17 @@ guessedWordDiv.innerText = guessedWord;
 let score = 10;
 scoreSpan.innerText = score;
 
+let gameOver = false; 
+
 for (let letter of alphabet) {
     let letterSpan = document.createElement('span');
     letterSpan.id = letter;
     letterSpan.innerText = letter.toUpperCase();
 
     letterSpan.addEventListener('click', e => {
+        
+        if (gameOver) return;
+
         if (!guessedLetters.includes(letterSpan.innerText)) {
             guessedLetters += letterSpan.innerText;
 
@@ -53,6 +58,7 @@ for (let letter of alphabet) {
 
                 if (!guessedWord.includes('_')) {
                     message.innerText = "Congratulations! You've guessed the word!";
+                    gameOver = true; 
                 }
             } else {
                 message.innerText = `${letterSpan.innerText} is not in the word`;
@@ -62,10 +68,10 @@ for (let letter of alphabet) {
                 scoreSpan.innerText = score;
 
                 if (score <= 0) {
-                    message.innerText = "Game over! You've run out of lives!";
+                    message.innerText = "Game over! You've run out of lives! The word was: "+ word;
+                    gameOver = true; 
                 }
             }
-
         } else {
             message.innerText = `You already guessed ${letterSpan.innerText}!`;
         }
@@ -74,4 +80,14 @@ for (let letter of alphabet) {
     alphabetDiv.appendChild(letterSpan);
 }
 
-console.log(guessedWord);
+function disableAllLetters() {
+    const letterSpans = alphabetDiv.querySelectorAll('span');
+    letterSpans.forEach(letterSpan => {
+        letterSpan.removeEventListener('click', letterSpan._handler); 
+        letterSpan.style.pointerEvents = 'none'; 
+    });
+}
+
+if (gameOver) {
+    disableAllLetters();
+}
