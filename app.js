@@ -1,93 +1,100 @@
-const guessedWordDiv = document.getElementById('word');
 const scoreSpan = document.getElementById('score');
+const guessedWordDiv = document.getElementById('word');
 const alphabetDiv = document.getElementById('alphabet');
-const message = document.getElementById('message');
-const newGameBtn = document.getElementById('try-again');
-
-const alphabet = 'abcdefghijklmnopqrsšzžtuvwõäöüxy';
-let guessedLetters = '';
-
-let word = 'Meow';
-let guessedWord = '';
-
-for (let letter of word) {
-    if (letter.toUpperCase() !== letter.toLowerCase()) {
-        guessedWord += '_';
-    } else {
-        guessedWord += letter;
-    }
-}
-
-guessedWordDiv.innerText = guessedWord;
 
 let score = 10;
 scoreSpan.innerText = score;
 
-let gameOver = false; 
+const alphabet = 'abdefghijklmnoprsšzžtuvõäöü';
+let guessedLetters = [];
+let guessedWord = [];
+let word = '';
+
+fetch('hangman.txt')
+    .then(res => res.text())
+    .then(words => {
+        words = words.split(/\r?\n/);
+        const i = Math.floor(Math.random() * words.length);
+        word = words[i];  
+
+        for (let char of word) {
+            if (char.toUpperCase() !== char.toLowerCase()) {
+                guessedWord.push('_');
+            } else {
+                guessedWord.push(char);
+            }
+        }
+        guessedWordDiv.innerText = guessedWord.join('');
+    });
+
+document.addEventListener('keydown', (e) => {
+    const keyName = e.key.toLowerCase();
+    if (alphabet.includes(keyName)) {
+        testLetter(keyName);
+        updateAlphabetDisplay(keyName);  // Update letter color on key press
+    }
+});
 
 for (let letter of alphabet) {
-    let letterSpan = document.createElement('span');
+    const letterSpan = document.createElement('span');
     letterSpan.id = letter;
     letterSpan.innerText = letter.toUpperCase();
 
-    letterSpan.addEventListener('click', e => {
-        
-        if (gameOver) return;
-
-        if (!guessedLetters.includes(letterSpan.innerText)) {
-            guessedLetters += letterSpan.innerText;
-
-            if (word.toLowerCase().includes(letterSpan.innerText.toLowerCase())) {
-                letterSpan.classList.add('correct');
-                message.innerText = `${letterSpan.innerText} is in the word`;
-
-                let updatedGuessedWord = '';
-
-                for (let i = 0; i < word.length; i++) {
-                    if (word[i].toLowerCase() === letterSpan.innerText.toLowerCase()) {
-                        updatedGuessedWord += word[i];
-                    } else if (guessedLetters.includes(word[i].toLowerCase()) || word[i] === guessedWord[i]) {
-                        updatedGuessedWord += word[i];
-                    } else {
-                        updatedGuessedWord += '_';
-                    }
-                }
-
-                guessedWord = updatedGuessedWord;
-                guessedWordDiv.innerText = guessedWord;
-
-                if (!guessedWord.includes('_')) {
-                    message.innerText = "Congratulations! You've guessed the word!";
-                    gameOver = true; 
-                }
-            } else {
-                message.innerText = `${letterSpan.innerText} is not in the word`;
-                letterSpan.classList.add('uncorrect');
-
-                score -= 1;
-                scoreSpan.innerText = score;
-
-                if (score <= 0) {
-                    message.innerText = "Game over! You've run out of lives! The word was: "+ word;
-                    gameOver = true; 
-                }
-            }
+    letterSpan.addEventListener('click', () => {
+        if (testLetter(letter)) {
+            letterSpan.classList.add('correct');
         } else {
-            message.innerText = `You already guessed ${letterSpan.innerText}!`;
+            letterSpan.classList.add('incorrect');
         }
+        letterSpan.style.pointerEvents = 'none';
     });
 
     alphabetDiv.appendChild(letterSpan);
 }
 
-function disableAllLetters() {
-    const letterSpans = alphabetDiv.querySelectorAll('span');
-    letterSpans.forEach(letterSpan => {
-        letterSpan.removeEventListener('click', letterSpan._handler); 
-        letterSpan.style.pointerEvents = 'none'; 
-    });
+// Function to update the alphabet display when the user presses a key
+function updateAlphabetDisplay(letter) {
+    const letterSpan = document.getElementById(letter);
+    if (letterSpan) {
+        if (guessedLetters.includes(letter)) {
+            if (word.toLowerCase().includes(letter)) {
+                letterSpan.classList.add('correct');
+            } else {
+                letterSpan.classList.add('incorrect');
+            }
+            letterSpan.style.pointerEvents = 'none'; // Disable further clicks after pressing
+        }
+    }
 }
 
-if (gameOver) {
-    disableAllLetters();
+function testLetter(letter) {
+    let isCorrect = false;
+
+    if (score && guessedWord.includes('_')) {
+        if (!guessedLetters.includes(letter)) {
+            guessedLetters.push(letter);
+
+            if (word.toLowerCase().includes(letter)) {
+                let i = word.toLowerCase().indexOf(letter);
+                while (i !== -1) {
+                    guessedWord[i] = word[i];
+                    i = word.toLowerCase().indexOf(letter, i + 1);
+                }
+
+                guessedWordDiv.innerText = guessedWord.join('');
+                isCorrect = true;
+            } else {
+                score--;
+                scoreSpan.innerText = score;
+                isCorrect = false;
+            }
+        }
+
+        if (score === 0) {
+            console.log('Kaotasid, õige sõna:', word);
+        } else if (!guessedWord.includes('_')) {
+            console.log('Võitsid mängu!');
+        }
+    }
+    return isCorrect;
 }
