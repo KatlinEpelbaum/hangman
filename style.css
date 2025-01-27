@@ -20,14 +20,24 @@
     padding: 3rem;
 }
 
-#score-container {
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 3.5rem;
+header {
     display: flex;
-    justify-content: center;
-    padding-bottom: 2rem;
+    flex-direction: column;
+    align-items: center; /* Centering content */
+    margin-bottom: 2rem; /* Spacing between header and word/alphabet */
+}
+
+#score-container {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 3.5rem;
     font-weight: bold;
     color: black;
+    margin-bottom: 1rem; /* Adds spacing between score and status message */
+}
+
+#message {
+    font-size: 2rem;
+    font-weight: bold;
 }
 
 #alphabet {
@@ -58,10 +68,38 @@
     transform: scale(0.95);
 }
 
-#alphabet span.correct{
+#alphabet span.correct {
     color: rgb(165, 159, 247);
 }
 
-#alphabet span.incorrect{
+#alphabet span.incorrect {
     color: rgb(250, 94, 94);
 }
+
+.winMessage{
+    color: deeppink;
+}
+.lostMessage{
+    color: darkviolet;
+}
+
+button {
+    margin-top: 5rem;
+    padding: 12px 24px;
+    color: white; /* White text */
+    font-size: 16px;
+    border: none; /* Remove border */
+    border-radius: 8px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: black;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+button:hover {
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+button:focus {
+    outline: none; /* Remove focus outline */
+}
+
